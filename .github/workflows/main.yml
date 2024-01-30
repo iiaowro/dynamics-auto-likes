@@ -1,7 +1,7 @@
 name: 'bot'
 on: 
   schedule:
-    - cron: 0 0 0/1 * * ? 
+    - cron: 0 0/1 * * *
 jobs:
   start:
     runs-on: ubuntu-lastest
@@ -17,5 +17,3 @@ jobs:
 
       - name: run
         run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ app.localCookie }} -Dapp.refreshToken=${{ app.refreshToken }} -Dapp.username=${{ app.username }} -Dapp.password=${{ app.password }}
-      
-  
