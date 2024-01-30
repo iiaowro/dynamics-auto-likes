@@ -1,0 +1,9 @@
+app:
+  # 用户登录后的cookie
+  localCookie:
+  # 用户登录后的refresh token
+  refreshToken:
+  # 用户名
+  username:
+  # base64加密后的密码
+  password:
