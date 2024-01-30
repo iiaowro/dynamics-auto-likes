@@ -406,6 +406,9 @@ public class AppProvider {
     private void run() {
         AppProvider app = SpringUtil.getBean("appProvider");
 
+        byte[] decode = Base64.decode(LOCAL_COOKIE);
+        LOCAL_COOKIE = new String(decode);
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
