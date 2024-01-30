@@ -1,5 +1,7 @@
 name: 'bot'
 on: 
+  push:
+    branches: [ main ]
   schedule:
     - cron: 0 0/1 * * *
 jobs:
@@ -16,4 +18,4 @@ jobs:
         run: mvn clean package
 
       - name: run
-        run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ app.localCookie }} -Dapp.refreshToken=${{ app.refreshToken }} -Dapp.username=${{ app.username }} -Dapp.password=${{ app.password }}
+        run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ LOCALCOOKIE }} -Dapp.refreshToken=${{ REFRESHTOKEN }} -Dapp.username=${{ USERNAME }} -Dapp.password=${{ PASSWORD }}
