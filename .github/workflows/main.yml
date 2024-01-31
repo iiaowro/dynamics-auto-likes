@@ -16,6 +16,11 @@ jobs:
           cache: 'maven'
       - name: package
         run: mvn clean package
-
+      - name: set env secret
+        env: 
+          LOCALCOOKIE: ${{ secrets.LOCALCOOKIE }}
+          REFRESHTOKEN: ${{ secrets.REFRESHTOKEN }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
       - name: run
-        run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ LOCALCOOKIE }} -Dapp.refreshToken=${{ REFRESHTOKEN }} -Dapp.username=${{ USERNAME }} -Dapp.password=${{ PASSWORD }}
+        run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ env.LOCALCOOKIE }} -Dapp.refreshToken=${{ env.REFRESHTOKEN }} -Dapp.username=${{ env.USERNAME }} -Dapp.password=${{ env.PASSWORD }}
