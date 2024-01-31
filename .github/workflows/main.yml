@@ -6,9 +6,9 @@ on:
     - cron: 0 0/1 * * *
 jobs:
   start:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checout@v4
+      - uses: actions/checkout@v2
       - name: set jdk
         uses: actions/setup-java@v1
         with:
