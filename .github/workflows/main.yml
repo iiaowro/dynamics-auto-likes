@@ -18,11 +18,9 @@ jobs:
           java-version: 11
           cache: 'maven'
       - name: package
-        run: mvn clean package
-      - name: run
         env: 
           LOCALCOOKIE: ${{ secrets.LOCALCOOKIE }}
           REFRESHTOKEN: ${{ secrets.REFRESHTOKEN }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ env.LOCALCOOKIE }} -Dapp.refreshToken=${{ env.REFRESHTOKEN }} -Dapp.username=${{ env.USERNAME }} -Dapp.password=${{ env.PASSWORD }}
+        run: mvn clean package && java -jar target/dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ env.LOCALCOOKIE }} -Dapp.refreshToken=${{ env.REFRESHTOKEN }} -Dapp.username=${{ env.USERNAME }} -Dapp.password=${{ env.PASSWORD }}
