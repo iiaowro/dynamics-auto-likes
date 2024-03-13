@@ -80,10 +80,10 @@ public class AppProvider {
 
 
     // 用户登录后的cookie
-    @Value("${app.localCookie}")
+    @Value("${app.localCookie:1}")
     public String LOCAL_COOKIE;
     // 用户登录后的refresh token   用于重置cookie
-    @Value("${app.refreshToken}")
+    @Value("${app.refreshToken:1}")
     public String LOCAL_REFRESH_TOKEN;
 
     // 用户登录后的refresh token   用于重置cookie
@@ -150,7 +150,7 @@ public class AppProvider {
         Console.log("请输入 密码：");
 
 
-        password = Arrays.toString(Base64.decode(LOCAL_PASSWORD));
+        password = LOCAL_PASSWORD;
         password = encodePwd(username, password);
         // login
         MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<String, String>(7);
@@ -182,6 +182,7 @@ public class AppProvider {
         Console.log("登录成功！ O(∩_∩)O");
         Console.log("LOCAL_COOKIE = {}", LOCAL_COOKIE.replace("[", "").replace("]", ""));
         Console.log("LOCAL_REFRESH_TOKEN = {}", LOCAL_REFRESH_TOKEN);
+        LOCAL_COOKIE = LOCAL_COOKIE.replace("[", "").replace("]", "");
     }
 
 
@@ -403,12 +404,9 @@ public class AppProvider {
 
 
     @PostConstruct
-    private void run() {
+    private void run() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         AppProvider app = SpringUtil.getBean("appProvider");
-
-        byte[] decode = Base64.decode(LOCAL_COOKIE);
-        LOCAL_COOKIE = new String(decode);
-
+//        app.loginPwdHandle();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

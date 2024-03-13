@@ -8,9 +8,9 @@
 
     <!-- INFO 日志输出-->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/info.log</file>
+        <file>./info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/${LOG_BACK}/${LOG_NAME}.%d{yyyy-MM-dd}.%i.log
+            <FileNamePattern>./${LOG_HOME}/${LOG_BACK}/${LOG_NAME}.%d{yyyy-MM-dd}.%i.log
             </FileNamePattern>
             <MaxHistory>10</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
