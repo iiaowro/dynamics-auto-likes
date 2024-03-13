@@ -1,19 +1,26 @@
+
+# https://rhysd.github.io/actionlint/   语法检查
 name: 'bot'
 on: 
-  schedule:
-    - cron: 0 0/1 * * *
+  push:
+    branches: [ main ]
+  # schedule:
+  #   - cron: 0 0/1 * * *
 jobs:
   start:
-    runs-on: ubuntu-lastest
+    environment: bot
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checout@v4
+      - uses: actions/checkout@v2
       - name: set jdk
         uses: actions/setup-java@v1
         with:
           java-version: 11
           cache: 'maven'
       - name: package
-        run: mvn clean package
-
-      - name: run
-        run: java -jar dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ app.localCookie }} -Dapp.refreshToken=${{ app.refreshToken }} -Dapp.username=${{ app.username }} -Dapp.password=${{ app.password }}
+        env: 
+          LOCALCOOKIE: ${{ secrets.LOCALCOOKIE }}
+          REFRESHTOKEN: ${{ secrets.REFRESHTOKEN }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+        run: mvn clean package && java -jar target/dynamics-auto-likes-1.0-SNAPSHOT.jar -Dapp.localCookie=${{ env.LOCALCOOKIE }} -Dapp.refreshToken=${{ env.REFRESHTOKEN }} -Dapp.username=${{ env.USERNAME }} -Dapp.password=${{ env.PASSWORD }}
