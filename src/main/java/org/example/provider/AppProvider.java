@@ -186,66 +186,6 @@ public class AppProvider {
     }
 
 
-    public void loginSMSHandle() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(LOGIN_CAPTCHA_URL, String.class);
-        String token = "";
-        String challenge = "";
-        String validate = "";
-        String seccode = "";
-        if (forEntity.getStatusCodeValue() == 200) {
-            JSONObject jsonObject = JSONUtil.parseObj(forEntity.getBody());
-            Console.log("1. 成功申请captcha验证码：");
-            Console.log("challenge = {}", jsonObject.getByPath("data.geetest.challenge").toString());
-            challenge = jsonObject.getByPath("data.geetest.challenge").toString();
-            Console.log("gt = {}", jsonObject.getByPath("data.geetest.gt").toString());
-            Console.log("请打开网页：{}，手动进行验证，并按照下面提示输入返回结果（按回车键结束输入）", LOGIN_CAPTCHA_VALIDATOR_URL);
-            Console.log("请输入 validate：");
-            validate = Console.input();
-            Console.log("请输入 seccode：");
-            seccode = Console.input();
-            Console.log("validate = {}, seccode = {}", validate, seccode);
-            token = jsonObject.getByPath("data.token").toString();
-        }
-        // send
-        MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<String, String>(7);
-        paramMap.add("cid", "86");
-        paramMap.add("tel", "18037193205");
-        paramMap.add("token", token);
-        paramMap.add("challenge", challenge);
-        paramMap.add("validate", validate);
-        paramMap.add("seccode", seccode);
-        paramMap.add("source", "main-fe-header");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        httpHeaders.set("APP-KEY", "android64");
-        httpHeaders.set("Buvid", "andro16WEG1AEW1G98B181D6B18S9Bid641");
-        httpHeaders.set("authority", "android641");
-        httpHeaders.set("cookie", "buvid3=5A8BEDB0-E7CC-E57C-26AB-1F9E954E3F5813664infoc; b_nut=1699404813; i-wanna-go-back=-1; b_ut=7; _uuid=C1EBB5F1-10E10F-8F78-10FA1-64F10245161010516833infoc; buvid4=614DAFB6-9951-0590-DD1D-C915E355D9FC14414-023110808-AsDi2%2Fv1r4A7TyrTiKSXhQ%3D%3D; home_feed_column=5; fingerprint=5293d81feba8c0ab14c1d4cd4305a91e; buvid_fp_plain=undefined; browser_resolution=1581-950; bp_video_offset_2644599=889688761538969671; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDYyNTExODgsImlhdCI6MTcwNTk5MTkyOCwicGx0IjotMX0.sJzhB0WdqcQoQmd3udSHgsAuW4WgPN3zOMmOaPP6mdo; bili_ticket_expires=1706251128; sid=5wlmrnfi; enable_web_push=DISABLE; header_theme_version=CLOSE; b_lsid=3223F47F_18D353DBB41; bsource=search_bing; buvid_fp=5293d81feba8c0ab14c1d4cd4305a91e");
-        httpHeaders.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0");
-        httpHeaders.set("env", "prod");
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(paramMap, httpHeaders);
-        ResponseEntity<String> exchange =
-                restTemplate.exchange(LOGIN_WEB_SEND_SMS_URL, HttpMethod.POST, requestEntity, String.class);
-        Console.log("短信发送请求结果:", exchange.getBody());
-        String captchaKey = JSONUtil.parse(exchange.getBody()).getByPath("data.captcha_key").toString();
-        // login
-        Console.log("请输入 验证码：");
-        String smsCode = Console.input();
-
-        MultiValueMap<String, String> loginParamMap = new LinkedMultiValueMap<String, String>(7);
-        loginParamMap.add("cid", "86");
-        loginParamMap.add("tel", "18037193205");
-        loginParamMap.add("code", smsCode);
-        loginParamMap.add("captcha_key", captchaKey);
-        loginParamMap.add("source", "main_web");
-
-
-        HttpEntity<MultiValueMap<String, String>> loginReq = new HttpEntity<MultiValueMap<String, String>>(loginParamMap, httpHeaders);
-        ResponseEntity<String> loginExchange =
-                restTemplate.exchange(LOGIN_WEB_SEND_SMS_URL, HttpMethod.POST, loginReq, String.class);
-        Console.log("短信发送请求结果:", loginExchange.getBody());
-    }
-
     public void loginQrCodeHandle() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException, InterruptedException {
         ResponseEntity<String> forEntity = restTemplate.getForEntity(LOGIN_WEB_QRCODE_GENERATE_URL, String.class);
         String qrcodeKey = "";
